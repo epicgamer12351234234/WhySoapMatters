@@ -1,0 +1,372 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOAP — Small Thing. Big Difference.</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#06111f;
+    color:#fff;
+    overflow-x:hidden;
+}
+body:before{
+    content:"";
+    position:fixed;
+    width:500px;height:500px;
+    background:#00d9ff;
+    filter:blur(160px);
+    opacity:.14;
+    top:-180px;left:-180px;
+    z-index:-1;
+}
+body:after{
+    content:"";
+    position:fixed;
+    width:450px;height:450px;
+    background:#5b5cff;
+    filter:blur(170px);
+    opacity:.13;
+    right:-160px;bottom:-120px;
+    z-index:-1;
+}
+nav{
+    position:fixed;
+    top:18px;left:50%;
+    transform:translateX(-50%);
+    width:min(1100px,92%);
+    padding:14px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(7,20,35,.65);
+    border:1px solid rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    border-radius:22px;
+    z-index:10;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+.logo{font-weight:900;letter-spacing:2px}
+.logo span{color:#45e7ff}
+nav a{
+    color:#dcecff;
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+}
+nav a:hover{color:#45e7ff}
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 20px 70px;
+    position:relative;
+}
+.hero-content{max-width:900px}
+.badge{
+    display:inline-block;
+    padding:9px 16px;
+    border:1px solid rgba(69,231,255,.35);
+    background:rgba(69,231,255,.08);
+    border-radius:50px;
+    color:#75edff;
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:1px;
+    margin-bottom:25px;
+}
+h1{
+    font-size:clamp(55px,10vw,115px);
+    line-height:.88;
+    letter-spacing:-6px;
+    margin-bottom:28px;
+}
+h1 span{
+    background:linear-gradient(90deg,#fff,#45e7ff,#8b8cff);
+    background-clip:text;
+    -webkit-background-clip:text;
+    color:transparent;
+}
+.hero p{
+    max-width:680px;
+    margin:auto;
+    color:#a9bdd3;
+    font-size:20px;
+    line-height:1.6;
+}
+.buttons{margin-top:35px}
+.btn{
+    display:inline-block;
+    padding:16px 25px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:800;
+    margin:6px;
+    transition:.25s;
+}
+.primary{
+    color:#03121d;
+    background:#45e7ff;
+    box-shadow:0 0 35px rgba(69,231,255,.3);
+}
+.primary:hover{transform:translateY(-4px);box-shadow:0 10px 45px rgba(69,231,255,.45)}
+.secondary{
+    color:#fff;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.05);
+}
+.secondary:hover{transform:translateY(-4px);background:rgba(255,255,255,.1)}
+section{
+    width:min(1100px,90%);
+    margin:auto;
+    padding:100px 0;
+}
+.section-title{
+    text-align:center;
+    font-size:48px;
+    margin-bottom:15px;
+}
+.section-subtitle{
+    text-align:center;
+    color:#91a7bd;
+    max-width:650px;
+    margin:0 auto 55px;
+    line-height:1.7;
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+.card{
+    padding:30px;
+    min-height:270px;
+    border-radius:25px;
+    background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 20px 50px rgba(0,0,0,.18);
+    transition:.3s;
+}
+.card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(69,231,255,.45);
+}
+.icon{
+    width:60px;height:60px;
+    display:grid;place-items:center;
+    border-radius:18px;
+    font-size:30px;
+    background:rgba(69,231,255,.1);
+    margin-bottom:25px;
+}
+.card h3{font-size:23px;margin-bottom:12px}
+.card p{color:#91a7bd;line-height:1.7}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:30px;
+}
+.stat{
+    text-align:center;
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+}
+.stat strong{
+    display:block;
+    font-size:38px;
+    color:#45e7ff;
+    margin-bottom:8px;
+}
+.stat span{color:#91a7bd}
+.steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+.step{
+    padding:25px;
+    border-radius:22px;
+    background:#0b1b2c;
+    border:1px solid rgba(255,255,255,.08);
+}
+.number{
+    color:#45e7ff;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:35px;
+}
+.step h3{margin-bottom:10px}
+.step p{color:#91a7bd;line-height:1.6}
+.cta{
+    text-align:center;
+    padding:80px 30px;
+    border-radius:35px;
+    background:
+      radial-gradient(circle at 20% 20%,rgba(69,231,255,.2),transparent 35%),
+      radial-gradient(circle at 80% 80%,rgba(120,100,255,.2),transparent 35%),
+      rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.1);
+}
+.cta h2{font-size:50px;margin-bottom:15px}
+.cta p{color:#9db2c7;line-height:1.7;margin-bottom:25px}
+footer{
+    text-align:center;
+    padding:35px;
+    color:#61788f;
+    border-top:1px solid rgba(255,255,255,.07);
+}
+@media(max-width:800px){
+    nav a{display:none}
+    .grid,.stats,.steps{grid-template-columns:1fr}
+    h1{letter-spacing:-3px}
+    .section-title{font-size:38px}
+    .cta h2{font-size:38px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">SOAP<span>.</span></div>
+    <div>
+        <a href="#why">WHY IT MATTERS</a>
+        <a href="#how">HOW TO WASH</a>
+        <a href="#start">START</a>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-content">
+        <div class="badge">🧼 A LITTLE SOAP GOES A LONG WAY</div>
+        <h1>SMALL THING.<br><span>BIG DIFFERENCE.</span></h1>
+        <p>
+            Soap is one of the simplest tools we have for removing dirt,
+            oils and germs from our hands. Clean hands help protect you
+            and the people around you.
+        </p>
+
+        <div class="buttons">
+            <a class="btn primary" href="#why">Discover Why →</a>
+            <a class="btn secondary" href="#how">Learn To Wash</a>
+        </div>
+    </div>
+</header>
+
+<section id="why">
+    <h2 class="section-title">Why soap matters.</h2>
+    <p class="section-subtitle">
+        It takes seconds to use, costs very little, and can make a huge
+        difference to everyday hygiene.
+    </p>
+
+    <div class="grid">
+        <div class="card">
+            <div class="icon">🦠</div>
+            <h3>Removes Germs</h3>
+            <p>
+                Soap helps lift dirt, oils and germs from your skin so they
+                can be rinsed away with water.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🛡️</div>
+            <h3>Helps Protect Others</h3>
+            <p>
+                Good handwashing habits can help reduce the spread of germs
+                to friends, family and classmates.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">✨</div>
+            <h3>Simple & Effective</h3>
+            <p>
+                You don't need fancy equipment. Soap, clean running water
+                and a little time are enough.
+            </p>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <strong>20s</strong>
+            <span>About how long to scrub</span>
+        </div>
+        <div class="stat">
+            <strong>2×</strong>
+            <span>Soap + water</span>
+        </div>
+        <div class="stat">
+            <strong>24/7</strong>
+            <span>A habit worth keeping</span>
+        </div>
+    </div>
+</section>
+
+<section id="how">
+    <h2 class="section-title">The perfect wash.</h2>
+    <p class="section-subtitle">
+        Four simple steps. No complicated science degree required.
+    </p>
+
+    <div class="steps">
+        <div class="step">
+            <div class="number">01 — WET</div>
+            <h3>Get your hands wet</h3>
+            <p>Use clean, running water.</p>
+        </div>
+
+        <div class="step">
+            <div class="number">02 — SOAP</div>
+            <h3>Add soap</h3>
+            <p>Cover your hands with soap.</p>
+        </div>
+
+        <div class="step">
+            <div class="number">03 — SCRUB</div>
+            <h3>Scrub well</h3>
+            <p>Rub palms, backs, fingers and under your nails for about 20 seconds.</p>
+        </div>
+
+        <div class="step">
+            <div class="number">04 — RINSE</div>
+            <h3>Rinse & dry</h3>
+            <p>Rinse thoroughly and dry your hands.</p>
+        </div>
+    </div>
+</section>
+
+<section id="start">
+    <div class="cta">
+        <h2>Ready to get clean?</h2>
+        <p>
+            Make handwashing part of your everyday routine.
+            Your future self will thank you.
+        </p>
+
+        <a class="btn primary"
+           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+           target="_blank"
+           rel="noopener noreferrer">
+            🧼 START WASHING TODAY
+        </a>
+    </div>
+</section>
+
+<footer>
+    <p>SOAP. — Clean hands. Simple habit. Big difference. 🫧</p>
+</footer>
+
+</body>
+</html>
